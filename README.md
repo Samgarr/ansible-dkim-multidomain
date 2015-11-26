@@ -1,16 +1,21 @@
-# ansible-dkim
-Ansible role for opendkim with postfix configuration on ubuntu
+# ansible-dkim-multidomain
+Customized ansible-dkim role for multiple domains on server and usage with host_vars.
+Tested on Debian Wheezy.
 
-### Example playbook
+### Example
+`host_vars/domain.com`
 ```yaml
 ---
-- hosts: myserver
-  user: root
-  sudo: False
+dkim_dom:
+  - maildomain1.com
+  - maildomain2.com
+  - maildomain3.com
+```
+
+`mailservers.yaml`
+```yaml
+---
+- hosts: mailservers
   roles:
-    - role: sunfoxcz.dkim
-      dkim_selector: mail
-      dkim_domains:
-       - domain1.tld
-       - domain2.tld
+    - { role: ansible-dkim-multidomain, dkim_selector: mail, dkim_domains: "{{ dkim_dom }}" }
 ```
