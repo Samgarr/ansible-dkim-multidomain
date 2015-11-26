@@ -23,6 +23,11 @@
   notify:
    - restart postfix
 
+- name: postfix remove no_milters
+  lineinfile: dest=/etc/postfix/main.cf regexp="^receive_override_options = no_milters$" state=absent
+  notify:
+   - restart postfix
+    
 - name: postfix is running
   service: name=postfix state=running enabled=yes
   tags: postfix
